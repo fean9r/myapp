@@ -65,7 +65,7 @@ const topForm = `
   <body class="app" ng-controller="MainSchedulerCtrl">
   	<div class="header">
   		<h1 class="logo " id="logo">
-  			<a class="logo_anchor" href="/">MyApp</a>
+  			<a class="logo_anchor" href="/">MyApp </a>
   		</h1>
   		<a class="login" href="/login">Login</a>
   	</div> <!-- End header-->
