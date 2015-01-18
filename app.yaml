@@ -1,0 +1,23 @@
+application: helloworld
+version: 1
+runtime: go
+api_version: go1
+
+handlers:
+- url: /stylesheets
+  static_dir: stylesheets
+
+- url: /scripts
+  static_dir: scripts
+
+- url: /lib/angular/
+  static_dir: lib/angular
+
+- url: /lib/scheduler/
+  static_dir: lib/scheduler
+
+- url: /lib/scheduler/imgs_dhx_terrace
+  static_dir: lib/scheduler/imgs_dhx_terrace
+
+- url: /.*
+  script: _go_app
