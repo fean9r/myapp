@@ -8,6 +8,7 @@ import (
 	"log"
 	"crypto/md5"
 	"io"
+    "io/ioutil"
 	"strconv"
 	"appengine"
 	"appengine/datastore"
@@ -24,34 +25,82 @@ type Person struct {
     Password string
 }
 
+type Page struct {
+    Title string
+    Content  []byte
+}
 var global_var int
+
+func loadPage(title string) (*Page, error) {
+    filename := title + ".html"
+    content, err := ioutil.ReadFile(filename)
+    if err != nil {
+        return nil, err
+    }
+    return &Page{Title: title, Content: content}, nil
+}
 
 func init() {
 	http.HandleFunc("/", root)
-	http.HandleFunc("/login", login)
-	http.HandleFunc("/day", day)
-	http.HandleFunc("/week", week)
-	http.HandleFunc("/insertPage", insertPage)
-	http.HandleFunc("/stats", stats)
+	http.HandleFunc("/login/", login)
+	http.HandleFunc("/day/", day)
+	http.HandleFunc("/week/", week)
+	http.HandleFunc("/insertPage/", insertPage)
+	http.HandleFunc("/stats/", stats)
+    http.HandleFunc("/view/", view)
 
+}
 
+func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
+    t, err := template.ParseFiles(tmpl + ".gtpl")
+   if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
+    err = t.Execute(w, p)
+    if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
 }
 
 func root(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, topForm)
-	t, _ := template.ParseFiles("Main.gtpl")
-    t.Execute(w, nil)
-	fmt.Fprint(w, bottomForm)
+	//fmt.Fprint(w, topForm)
+    title := r.URL.Path[len("/base/"):]
+    p, err := loadPage(title)
+     if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        http.Redirect(w, r, "/base/"+title, http.StatusFound)
+        return
+    }
+    // t, _ := template.ParseFiles("Main.gtpl")
+    // t.Execute(w, nil)
+    renderTemplate(w,"base",p)
+	//fmt.Fprint(w, bottomForm)
 }
 
+
+func view(w http.ResponseWriter, r *http.Request) {
+    //fmt.Fprint(w, topForm)
+    title := r.URL.Path[len("/view/"):]
+    p, err := loadPage(title)
+     if err != nil {
+        http.Error(w, err.Error(), http.StatusInternalServerError)
+        http.Redirect(w, r, "/base/"+title, http.StatusFound)
+        return
+    }
+    // t, _ := template.ParseFiles("Main.gtpl")
+    // t.Execute(w, nil)
+    renderTemplate(w,"base",p)
+    //fmt.Fprint(w, bottomForm)
+}
 const topForm = `
 <html ng-app="schedulerApp">
 <head >
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="stylesheets/myapp.css">
 	<link rel="stylesheet" href="lib/scheduler/dhtmlxscheduler.css">
-
+<--
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+--!>
 	<script src="lib/angular/angular.min.js"></script>
 	<script src="lib/scheduler/dhtmlxscheduler.js"></script>
 	<script src="scripts/app.js"></script>
@@ -67,7 +116,7 @@ const topForm = `
   		<h1 class="logo " id="logo">
   			<a class="logo_anchor" href="/">MyApp</a>
   		</h1>
-  		<a class="login" href="/login">Login</a>
+  		<a class="login" href="/login/">Login</a>
   	</div> <!-- End header-->
   	<div class="container">
 `
