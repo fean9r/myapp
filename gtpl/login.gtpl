@@ -1,3 +1,6 @@
+//login.gtpl
+{{define "login"}}
+{{template "header"}}
 <div id="content">
   	<h2>Login </h2>
   	<div id="post_container">
@@ -9,3 +12,5 @@
 		</form>
     </div>
 </div>
+{{template "footer"}}
+{{end}}

@@ -1,4 +1,3 @@
-
 //header.gtpl
 {{define "header"}}
 <html ng-app="schedulerApp">
@@ -19,5 +18,12 @@
 	</script>
 
 </head>
-<body class="app" ng-controller="MainSchedulerCtrl">
+  <body class="app" ng-controller="MainSchedulerCtrl">
+  	<div class="header">
+  		<h1 class="logo " id="logo">
+  			<a class="logo_anchor" href="/view/main">MyApp</a>
+  		</h1>
+  		<a class="login" href="/view/login">Login</a>
+  	</div> <!-- End header-->
+  	<div class="container"> <!-- Start Container-->
 {{end}}

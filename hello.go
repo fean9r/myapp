@@ -33,7 +33,7 @@ var global_var int
 
 func loadPage(title string) (*Page, error) {
     filename := title + ".html"
-    content, err := ioutil.ReadFile("/html/"+filename)
+    content, err := ioutil.ReadFile("html/"+filename)
     if err != nil {
         return nil, err
     }
@@ -67,16 +67,16 @@ func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
 
 func root(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprint(w, topForm)
-    title := r.URL.Path[len("/base/"):]
+    title := r.URL.Path[len("/???/"):]
     p, err := loadPage(title)
      if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
-        http.Redirect(w, r, "/base/"+title, http.StatusFound)
+        http.Redirect(w, r, "/???/"+title, http.StatusFound)
         return
     }
     // t, _ := template.ParseFiles("Main.gtpl")
     // t.Execute(w, nil)
-    renderTemplate(w,"base",p)
+    renderTemplate(w,"???",p)
 	//fmt.Fprint(w, bottomForm)
 }
 
@@ -84,15 +84,16 @@ func root(w http.ResponseWriter, r *http.Request) {
 func view(w http.ResponseWriter, r *http.Request) {
     //fmt.Fprint(w, topForm)
     title := r.URL.Path[len("/view/"):]
-    p, err := loadPage(title)
-     if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        http.Redirect(w, r, "/base/"+title, http.StatusFound)
-        return
-    }
+    // p, err := loadPage(title)
+    //  if err != nil {
+    //     http.Error(w, err.Error(), http.StatusInternalServerError)
+    //     http.Redirect(w, r, "/base/"+title, http.StatusFound)
+    //     return
+    // }
     // t, _ := template.ParseFiles("Main.gtpl")
     // t.Execute(w, nil)
-    renderTemplate(w,"content",p)
+   // renderTemplate(w,title,p)
+    renderTemplate(w,title,nil)
     //fmt.Fprint(w, bottomForm)
 }
 

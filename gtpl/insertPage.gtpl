@@ -1,3 +1,6 @@
+//insertPage.gtpl
+{{define "insertPage"}}
+{{template "header"}}
 <div id="content">	
     <h2>Insert Page</h2>
   	<div id="post_container">
@@ -9,3 +12,5 @@
       </form> 
     </div>
 </div>
+{{template "footer"}}
+{{end}}

@@ -1,3 +1,6 @@
+//week.gtpl
+{{define "week"}}
+{{template "header"}}
 <div id="content">	
   	<h2>Week</h2>
   	<div id="post_container" ng-controller="MainSchedulerCtrl">
@@ -16,3 +19,5 @@
 		</div>
     </div>
 </div>
+{{template "footer"}}
+{{end}}
