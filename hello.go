@@ -33,30 +33,33 @@ var global_var int
 
 func loadPage(title string) (*Page, error) {
     filename := title + ".html"
-    content, err := ioutil.ReadFile(filename)
+    content, err := ioutil.ReadFile("/html/"+filename)
     if err != nil {
         return nil, err
     }
     return &Page{Title: title, Content: content}, nil
 }
 
+
+var templates = template.Must(template.ParseGlob("gtpl/*"))
+
 func init() {
-	http.HandleFunc("/", root)
-	http.HandleFunc("/login/", login)
-	http.HandleFunc("/day/", day)
-	http.HandleFunc("/week/", week)
-	http.HandleFunc("/insertPage/", insertPage)
-	http.HandleFunc("/stats/", stats)
+   // http.HandleFunc("/", root)
+	//http.HandleFunc("/login/", login)
+	//http.HandleFunc("/day/", day)
+	//http.HandleFunc("/week/", week)
+	//http.HandleFunc("/insertPage/", insertPage)
+	//http.HandleFunc("/stats/", stats)
     http.HandleFunc("/view/", view)
 
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-    t, err := template.ParseFiles(tmpl + ".gtpl")
-   if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-    }
-    err = t.Execute(w, p)
+   // t, err := template.ParseFiles(tmpl + ".gtpl")
+    //if err != nil {
+    //    http.Error(w, err.Error(), http.StatusInternalServerError)
+   // }
+    err := templates.ExecuteTemplate(w, tmpl, p)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
     }
@@ -89,61 +92,21 @@ func view(w http.ResponseWriter, r *http.Request) {
     }
     // t, _ := template.ParseFiles("Main.gtpl")
     // t.Execute(w, nil)
-    renderTemplate(w,"base",p)
+    renderTemplate(w,"content",p)
     //fmt.Fprint(w, bottomForm)
 }
-const topForm = `
-<html ng-app="schedulerApp">
-<head >
-	<meta charset="utf-8">
-	<link rel="stylesheet" href="stylesheets/myapp.css">
-	<link rel="stylesheet" href="lib/scheduler/dhtmlxscheduler.css">
-<--
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
---!>
-	<script src="lib/angular/angular.min.js"></script>
-	<script src="lib/scheduler/dhtmlxscheduler.js"></script>
-	<script src="scripts/app.js"></script>
-	<script src="scripts/app.scheduler.js"></script>
-	<script src="scripts/myscripts.js"></script>
-	<script type="text/javascript">
-		// some javascript script 
-	</script>
-
-</head>
-  <body class="app" ng-controller="MainSchedulerCtrl">
-  	<div class="header">
-  		<h1 class="logo " id="logo">
-  			<a class="logo_anchor" href="/">MyApp</a>
-  		</h1>
-  		<a class="login" href="/login/">Login</a>
-  	</div> <!-- End header-->
-  	<div class="container">
-`
-const bottomForm = `
-	
-		<footer class="site-footer">
-    		<p class="upcomer">All rights reserved</p>
-    	</footer>
-	</div> <!-- End Container-->
-  </body>
-</html>
-`
 
 func day( w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, topForm)
+	
 	tim := time.Now()
 	t, _ := template.ParseFiles("Day.gtpl")
     t.Execute(w, tim)
-	fmt.Fprint(w, bottomForm)
 }
 
 
 func week( w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, topForm)
 	t, _ := template.ParseFiles("Week.gtpl")
     t.Execute(w, nil)
-	fmt.Fprint(w, bottomForm)
 }
 
 // guestbookKey returns the key used for all guestbook entries.
@@ -152,7 +115,6 @@ func guestbookKey(c appengine.Context) *datastore.Key {
         return datastore.NewKey(c, "Guestbook", "default_guestbook", 0, nil)
 }
 func insertPage( w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, topForm)
 
 	if r.Method == "GET" {
     	// prevent duplicate submission
@@ -195,17 +157,14 @@ func insertPage( w http.ResponseWriter, r *http.Request) {
        	}
 	}
 	
-	fmt.Fprint(w, bottomForm)
 }
 
 func stats( w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, topForm)
 	t, _ := template.ParseFiles("stats.gtpl")
     err := t.Execute(w, nil)
     if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-	fmt.Fprint(w, bottomForm)
 }
 
 func checkIdentity(u , pass []string) bool {
@@ -215,7 +174,6 @@ func checkIdentity(u , pass []string) bool {
 }
 
 func login( w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, topForm)
 	log.Println("method:", r.Method) //get request method
     if r.Method == "GET" {
 
@@ -244,6 +202,5 @@ func login( w http.ResponseWriter, r *http.Request) {
         	t.Execute(w, r.FormValue("username"))
     	}
     }
-	fmt.Fprint(w, bottomForm)
 }
 

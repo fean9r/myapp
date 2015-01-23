@@ -1,3 +1,6 @@
+
+//header.gtpl
+{{define "header"}}
 <html ng-app="schedulerApp">
 <head >
 	<meta charset="utf-8">
@@ -16,19 +19,5 @@
 	</script>
 
 </head>
-  <body class="app" ng-controller="MainSchedulerCtrl">
-  	<div class="header">
-  		<h1 class="logo " id="logo">
-  			<a class="logo_anchor" href="/">MyApp</a>
-  		</h1>
-  		<a class="login" href="/login/">Login</a>
-  	</div> <!-- End header-->
-  	
-  	<div class="container">
-  		{{printf "%s" .Content}}
-  		<footer class="site-footer">
-    		<p class="upcomer">All rights reserved</p>
-    	</footer>
-	</div> <!-- End Container-->
-  </body>
-</html>
+<body class="app" ng-controller="MainSchedulerCtrl">
+{{end}}
