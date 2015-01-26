@@ -4,19 +4,19 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
-	// "log"
+	 "log"
 )
 
 var HandleFunctions = ""
 
-var validPath = regexp.MustCompile("^/("+ HandleFunctions +")/([a-zA-Z0-9]+)$")
+var validPath = ""
 
 
 func makeHandler(fn func(http.ResponseWriter, *http.Request,string)) http.HandlerFunc {
 	return func (w http.ResponseWriter, r *http.Request){
 		m := validPath.FindStringSubmatch(r.URL.Path)
-		// log.Println("validpath", m)
 		if m == nil {
+			 log.Println("strange",validPath)
         	http.NotFound(w, r)
        		return 
     	}
@@ -50,5 +50,7 @@ func renderTemplate (w http.ResponseWriter, tmpl string, p *Params) {
 func init() {
 	addHandler("/insert/", makeHandler(insert))
     addHandler("/view/", makeHandler(view))
+    validPath = regexp.MustCompile("^/("+ HandleFunctions +")/([a-zA-Z0-9]+)$")
+     log.Println(HandleFunctions)
 }
 

@@ -17,13 +17,13 @@ func getParams (title string,r *http.Request) *Params {
 }
 
 
-func processRequest (title string,param *Params)  {
+func processRequest (r *http.Request,title string,param *Params)  {
     
     switch title {
         case "insertedValue":
-            processInsertedValueData(param)
+            processInsertedValueData(r,param)
         case "login":
-            processLoginFunc(param)
+            processLoginFunc(r,param)
         default:
              
         }
@@ -42,7 +42,7 @@ func insert(w http.ResponseWriter, r *http.Request, title string) {
         
         param := getParams(title,r)
         if  token != "" && param != nil  {
-            processRequest(title,param)
+            processRequest(r,title,param)
             renderTemplate(w,title,param)
         } else {
             // error 

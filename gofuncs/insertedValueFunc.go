@@ -3,8 +3,10 @@ package hallo
 
 import (
 	"net/http"
+	//"time"
 	"appengine"
     "appengine/datastore"
+    "log"
 )
 
 
@@ -23,17 +25,17 @@ func retriveInsertedValueData (r *http.Request) *Params {
     }
     return nil
 }
-func processInsertedValueData (params *Params)  {
+func processInsertedValueData (r *http.Request,params *Params) error  {
         // c := appengine.NewContext(r)
+        log.Println(params)
+        //value := params["Date"]
         // date := Date{
-        //         Person: "mao",
-        //         Content: r.FormValue("date"),
+        //         Person: "WhoWasInserting",
+        //         Content: value,
         //         Date:    time.Now(),
         // }
         // key := datastore.NewIncompleteKey(c, "Date", guestbookKey(c))
         // _, err := datastore.Put(c, key, &date)
-        // if err != nil {
-        //         http.Error(w, err.Error(), http.StatusInternalServerError)
-        //         return
-        // }
+        return nil
 }
+
