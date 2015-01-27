@@ -24,6 +24,6 @@ func checkIdentity (u , pass []string) bool {
 }
 
 
-func processLoginFunc (r *http.Request,param *Params) {
-
+func processLoginFunc (r *http.Request,param *Params) error {
+	return nil
 }

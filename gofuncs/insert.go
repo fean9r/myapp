@@ -17,15 +17,15 @@ func getParams (title string,r *http.Request) *Params {
 }
 
 
-func processRequest (r *http.Request,title string,param *Params)  {
+func processRequest (r *http.Request,title string,param *Params) error {
     
     switch title {
         case "insertedValue":
-            processInsertedValueData(r,param)
+            return processInsertedValueData(r,param)
         case "login":
-            processLoginFunc(r,param)
+            return processLoginFunc(r,param)
         default:
-             
+            return nil
         }
 }
 
@@ -42,8 +42,12 @@ func insert(w http.ResponseWriter, r *http.Request, title string) {
         
         param := getParams(title,r)
         if  token != "" && param != nil  {
-            processRequest(r,title,param)
-            renderTemplate(w,title,param)
+            err := processRequest(r,title,param)
+            if err!=nil {
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+            }else {
+                renderTemplate(w,title,param)
+            }
         } else {
             // error 
             // duplicate submission 
