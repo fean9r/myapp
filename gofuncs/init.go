@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
-	"log"
+	//"log"
 )
 
 var HandleFunctions = ""
@@ -16,7 +16,6 @@ func makeHandler(fn func(http.ResponseWriter, *http.Request,string)) http.Handle
 	return func (w http.ResponseWriter, r *http.Request){
 		m := validPath.FindStringSubmatch(r.URL.Path)
 		if m == nil {
-			 log.Println("strange",validPath)
         	http.NotFound(w, r)
        		return 
     	}

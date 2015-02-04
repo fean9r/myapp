@@ -7,6 +7,7 @@ import (
 	"appengine"
     "appengine/datastore"
     "log"
+    "errors"
 )
 
 
@@ -27,18 +28,19 @@ func retriveInsertedValueData (r *http.Request) *Params {
 }
 func processInsertedValueData (r *http.Request,params *Params) error  {
         c := appengine.NewContext(r)
-        value := (*Params)["Date"]
+        value := (*params)["Date"]
 
         str, ok := value.(string); 
     		
-        if ok! { 
-
+        if ok!=true { 
+        	return errors.New("String cast Exception")
         }
 		
 		date := Date {
             Person: "WhoWasInserting",
-            Content: value,
-            Date:    time.Now(),
+            Content: str,
+            Date: time.Now(),
+		}
 
         log.Println(date)
         key := datastore.NewIncompleteKey(c, "Date", guestbookKey(c))
