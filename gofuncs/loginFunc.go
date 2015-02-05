@@ -5,16 +5,16 @@ import (
 	"net/http"
 )
 
-func retriveLoginData (r *http.Request) *Params {
+func retriveLoginData (r *http.Request) (*Params,error) {
 
     user := r.FormValue("username")
     pass := r.FormValue("password")
     
     if user != "" && pass != "" {
         param := Params {"Username" :  user,"Password" : pass}
-        return &param
+        return &param,nil
     }
-    return nil
+    return nil,nil
 }
 
 func checkIdentity (u , pass []string) bool {

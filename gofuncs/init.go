@@ -7,6 +7,10 @@ import (
 	//"log"
 )
 
+var viewFuncManager = NewFuncManager()
+
+var insertFuncManager = NewFuncManager()
+
 var HandleFunctions = ""
 
 var validPath  *regexp.Regexp
@@ -51,5 +55,15 @@ func init() {
 	addHandler("/insert/", makeHandler(insert))
     addHandler("/view/", makeHandler(view))
     validPath = regexp.MustCompile("^/("+ HandleFunctions +")/([a-zA-Z0-9]+)$")
+    
+    viewFuncManager.addFunction("day",dayFunc)
+    viewFuncManager.addFunction("insertPage",insertPageFunc)
+    viewFuncManager.addFunction("login",loginFunc)
+
+    insertFuncManager.addFunction("insertedValue",retriveInsertedValueData)
+    insertFuncManager.addFunction("login",retriveLoginData)
+    
+
+
 }
 

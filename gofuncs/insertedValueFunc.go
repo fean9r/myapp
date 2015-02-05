@@ -16,15 +16,15 @@ func guestbookKey(c appengine.Context) *datastore.Key {
         // The string "default_guestbook" here could be varied to have multiple guestbooks.
         return datastore.NewKey(c, "Guestbook", "default_guestbook", 0, nil)
 }
-func retriveInsertedValueData (r *http.Request) *Params {
+func retriveInsertedValueData (r *http.Request) (*Params,error) {
     
     date := r.FormValue("date")
 
     if date != "" {
         param := Params {"Date" : date}
-        return &param
+        return &param ,nil
     }
-    return nil
+    return nil,nil
 }
 func processInsertedValueData (r *http.Request,params *Params) error  {
         c := appengine.NewContext(r)
