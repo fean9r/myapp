@@ -38,9 +38,13 @@ func insert(w http.ResponseWriter, r *http.Request, title string) {
        
         r.ParseForm()     
         
-        myfunc , err := insertFuncManager.getFunction(title)
-
-        param , err := myfunc(r)
+        myfunc, err := insertFuncManager.getFunction(title)
+        // 
+        if err!=nil {
+            // no insert function for this title
+            return
+        }
+        param, err := myfunc(r)
 
         if err!=nil {
             //param := getParams(title,r)
