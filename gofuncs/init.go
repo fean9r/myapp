@@ -38,7 +38,7 @@ var templates = template.Must(template.ParseGlob("gtpl/*"))
 type Params map[string]interface {}
 
 
-func renderTemplate (w http.ResponseWriter, tmpl string, p *Params) {
+func renderTemplate (w http.ResponseWriter, tmpl string, p  interface{}) {
     err := templates.ExecuteTemplate(w, tmpl, p)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -3,6 +3,7 @@ package hallo
 
 import (
 	"net/http"
+    "errors"
 )
 
 func retriveLoginData (r *http.Request) (*Params,error) {
@@ -10,15 +11,19 @@ func retriveLoginData (r *http.Request) (*Params,error) {
     user := r.FormValue("username")
     pass := r.FormValue("password")
     
-    if user != "" && pass != "" {
+    if goodIdentity(&user, &pass) {
         param := Params {"Username" :  user,"Password" : pass}
         return &param,nil
     }
-    return nil,nil
+    return nil,errors.New("Not correct login data")
 }
 
-func checkIdentity (u , pass []string) bool {
+func goodIdentity (u , pass *string) bool {
     h := true
+
+    if *u == "" || *pass=="" {
+        h=false
+    }
 
     return h
 }

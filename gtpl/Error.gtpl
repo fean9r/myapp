@@ -1,10 +1,10 @@
-//loginError.gtpl
-{{define "loginError"}}
+//Error.gtpl
+{{define "Error"}}
 {{template "header"}}
 <div id="content">
-  	<h2>Login Error </h2>
+  	<h2>General Error </h2>
   	<div id="post_container">
-    	<p> Username or password error </p>
+    	<p> An error {{.}} occurred!</p>
     </div>
 </div>
 {{template "footer"}}
