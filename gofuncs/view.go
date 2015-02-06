@@ -53,12 +53,15 @@ func loginFunc(r *http.Request) (*Params,error) {
 
 func view(w http.ResponseWriter, r *http.Request,title string ) {
 
-    //params,err := loadParams(r,title)
     myfunc,err := viewFuncManager.getFunction(title)
     if err != nil {
+        renderTemplate(w,"Error",err)
+        return
+    }
+
+    if myfunc == nil {
         renderTemplate(w,title,nil)
-        //http.Error(w, err.Error(), http.StatusInternalServerError)
-    }else {
+    }else{
         params,err := myfunc(r)
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -2,7 +2,6 @@ package hallo
 
 import (
 	"net/http"
-    "log"
 )
 
 
@@ -36,29 +35,28 @@ func insert(w http.ResponseWriter, r *http.Request, title string) {
         param, err := myfunc(r)
         if err!=nil {
             // no params fetched with the insert function 
+            // curl --data "username=&&password=2&&token=3" http://localhost:8080/insert/login
             renderTemplate(w,"Error",err)
             return
         }
 
         // get token to avoid double summit 
         r.ParseForm() 
-        if token := r.Form.Get("token"); token != "" && *param !=nil{
-            log.Println(*param)
-            //request, err := insertRequestManager.getRequest(title)
-            //err := request(r, param)
 
-            err = processRequest(r,title,param)
-            if err!=nil {
-                http.Error(w, err.Error(), http.StatusInternalServerError)
-            }else {
-                renderTemplate(w,title,param)
-            }
-        }else {
+        if token := r.Form.Get("token"); token == ""{
             renderTemplate(w,"Error","duplicate submission")
             return
         }
 
-       
-        
+
+            //request, err := insertRequestManager.getRequest(title)
+            //err := request(r, param)
+
+        err = processRequest(r,title,param)
+        if err!=nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+        }else {
+            renderTemplate(w,title,param)
+        }
     }
 }

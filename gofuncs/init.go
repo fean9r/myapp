@@ -52,6 +52,9 @@ func init() {
     addHandler("/view/", makeHandler(view))
     validPath = regexp.MustCompile("^/("+ HandleFunctions +")/([a-zA-Z0-9]+)$")
     
+    viewFuncManager.addFunction("main",nil)
+    viewFuncManager.addFunction("week",nil)
+    viewFuncManager.addFunction("stats",nil)
     viewFuncManager.addFunction("day",dayFunc)
     viewFuncManager.addFunction("insertPage",insertPageFunc)
     viewFuncManager.addFunction("loginPage",loginFunc)
