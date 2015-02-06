@@ -5,18 +5,6 @@ import (
 )
 
 
-// func getParams (title string,r *http.Request) *Params {
-//     switch title {
-//         case "insertedValue":
-//            // return retriveInsertedValueData(r)
-//         case "login":
-//            // return retriveLoginData(r)
-//         default:
-//             return nil
-//         }
-//}
-
-
 func processRequest (r *http.Request,title string,param *Params) error {
     
     switch title {
@@ -36,32 +24,39 @@ func insert(w http.ResponseWriter, r *http.Request, title string) {
         http.Error(w, "NOT POSSIBLE", http.StatusInternalServerError)
     } else {
        
-        r.ParseForm()     
+            
         
         myfunc, err := insertFuncManager.getFunction(title)
         // 
         if err!=nil {
             // no insert function for this title
+             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
         }
-        param, err := myfunc(r)
 
+        param, err := myfunc(r)
         if err!=nil {
-            //param := getParams(title,r)
-            token := r.Form.Get("token")
-            if  token != "" && param != nil  {
-                err := processRequest(r,title,param)
-                if err!=nil {
-                    http.Error(w, err.Error(), http.StatusInternalServerError)
-                }else {
-                    renderTemplate(w,title,param)
-                }
-            } else {
-                // error 
-                // duplicate submission 
-                // empty value
-                renderTemplate(w,title+"Error",nil)
+            // no params fetched with the insert function 
+             http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+        // get token to avoid double summit 
+        r.ParseForm() 
+        token := r.Form.Get("token")
+
+        if  token != "" && param != nil  {
+            
+            err := processRequest(r,title,param)
+            if err!=nil {
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+            }else {
+                renderTemplate(w,title,param)
             }
+        } else {
+            // error 
+            // duplicate submission 
+            // empty value
+            renderTemplate(w,title+"Error",nil)
         }
     }
 }

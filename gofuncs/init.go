@@ -39,10 +39,6 @@ type Params map[string]interface {}
 
 
 func renderTemplate (w http.ResponseWriter, tmpl string, p *Params) {
-
-    // if p != nil {
-    //     log.Println("Template params", *p)
-    // }
     err := templates.ExecuteTemplate(w, tmpl, p)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
