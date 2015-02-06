@@ -54,7 +54,7 @@ func init() {
     
     viewFuncManager.addFunction("day",dayFunc)
     viewFuncManager.addFunction("insertPage",insertPageFunc)
-    viewFuncManager.addFunction("login",loginFunc)
+    viewFuncManager.addFunction("loginPage",loginFunc)
 
     insertFuncManager.addFunction("insertedValue",retriveInsertedValueData)
     insertFuncManager.addFunction("login",retriveLoginData)

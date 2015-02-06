@@ -23,7 +23,7 @@
   		<h1 class="logo " id="logo">
   			<a class="logo_anchor" href="/view/main">MyApp</a>
   		</h1>
-  		<a class="login" href="/view/login">Login</a>
+  		<a class="login" href="/view/loginPage">Login</a>
   	</div> <!-- End header-->
   	<div class="container"> <!-- Start Container-->
 {{end}}

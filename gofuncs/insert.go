@@ -42,21 +42,23 @@ func insert(w http.ResponseWriter, r *http.Request, title string) {
 
         // get token to avoid double summit 
         r.ParseForm() 
-        if token := r.Form.Get("token"); token == ""{
+        if token := r.Form.Get("token"); token != "" && *param !=nil{
+            log.Println(*param)
+            //request, err := insertRequestManager.getRequest(title)
+            //err := request(r, param)
+
+            err = processRequest(r,title,param)
+            if err!=nil {
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+            }else {
+                renderTemplate(w,title,param)
+            }
+        }else {
             renderTemplate(w,"Error","duplicate submission")
             return
         }
 
        
-        log.Println(*param)
-        //request, err := insertRequestManager.getRequest(title)
-        //err := request(r, param)
-
-        err = processRequest(r,title,param)
-        if err!=nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
-        }else {
-            renderTemplate(w,title,param)
-        }
+        
     }
 }
