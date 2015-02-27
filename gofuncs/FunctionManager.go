@@ -5,21 +5,26 @@ import (
     "errors"
 )
 
-type fn func (http.ResponseWriter,*http.Request) (*Params,error)
+
+type Params map[string] interface {}
+
+//type fn func ( args ... interface{} ) (error)
+
+type function func (http.ResponseWriter, *http.Request, *Params) error
 
 type FuncManager struct {
-    funcMap map[string] fn
+    funcMap map[string] function
 }
 
 func NewFuncManager() * FuncManager{
-    return &FuncManager{ make(map[string]fn)}
+    return &FuncManager{ make(map[string]function)}
 }
-func (f *FuncManager) addFunction(name string, newFun fn){
+
+func (f *FuncManager) addFunction(name string, newFun function){
     f.funcMap[name]=newFun
 }
 
-func (f *FuncManager) getFunction(name string) (fn , error){
-
+func (f *FuncManager) getFunction(name string) (function , error){
     if val, ok := f.funcMap[name]; ok {
         return val,nil
     }     

@@ -32,26 +32,28 @@ func checkDate ( value *string) bool {
     return h
 }
 
-func insertPageFunc (w http.ResponseWriter,r *http.Request) (*Params,error) {
+
+func insertPageFunc (w http.ResponseWriter,r *http.Request,param *Params) (error) {
     
     crutime := time.Now().Unix()
     h := md5.New()
     io.WriteString(h, strconv.FormatInt(crutime, 10))
     token := fmt.Sprintf("%x", h.Sum(nil))
-    param := Params {"Token" : token}
-    return &param , nil
+     //:= Params {"" : }
+    (*param)["Token"] = token
+    return nil
 }
 
 
-func retriveInsertedValueData (w http.ResponseWriter,r *http.Request) (*Params,error) {
+func retriveInsertedValueData (w http.ResponseWriter,r *http.Request, param *Params) (error) {
     
     if date := r.FormValue("date") ; checkDate(&date) {
-        param := Params {"Date" : date}
-        return &param ,nil
+         (*param)["Date"] =date
+        return nil
     }
-
-    return nil,errors.New("Not correct date")
+    return errors.New("Not correct date")
 }
+
 func processInsertedValueData (w http.ResponseWriter,r *http.Request,params *Params) error  {
         c := appengine.NewContext(r)
         value := (*params)["Date"]

@@ -29,16 +29,19 @@ func insert(w http.ResponseWriter, r *http.Request, title string) {
         http.Error(w, "NOT POSSIBLE", http.StatusInternalServerError)
     } else {
                
-        myfunc, err := insertFuncManager.getFunction(title)
-        if err!=nil {
+        dataRetreiverFunction, err := insertFuncManager.getFunction(title)
+
+        if err != nil {
             // no insert function for this title
             // curl --data "param1=2" http://localhost:8080/insert/MAO
             renderTemplate(w,"Error",err)
             return
         }
 
-        param, err := myfunc(w,r)
-        if err!=nil {
+        param := Params {}
+        err = dataRetreiverFunction(w, r, &param)
+
+        if err != nil {
             // no params fetched with the insert function 
             // curl --data "username=&&password=2&&token=3" http://localhost:8080/insert/login
             renderTemplate(w,"Error",err)
@@ -54,11 +57,11 @@ func insert(w http.ResponseWriter, r *http.Request, title string) {
         }
 
 
-        request, err := insertRequestManager.getRequest(title)
+        requestFunction, err := insertRequestManager.getFunction(title)
 
-        err = request(r, param)
+        err = requestFunction(w ,r ,&param)
 
-        if err!=nil {
+        if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
         }else {
             renderTemplate(w,title,param)

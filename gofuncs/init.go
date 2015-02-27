@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
-	"specificPages/"
 )
 
 var viewFuncManager = NewFuncManager()
@@ -20,9 +19,6 @@ func first(args ...interface{}) interface{} {
 }
 
 var templates = template.Must(template.ParseGlob("gtpl/*"))
-
-
-
 
 func renderTemplate (w http.ResponseWriter, tmpl string, p  interface {} ) {
     err := templates.ExecuteTemplate(w, tmpl, p)
@@ -41,17 +37,16 @@ func init() {
     viewFuncManager.addFunction("main",nil)
     viewFuncManager.addFunction("week",nil)
     viewFuncManager.addFunction("stats",nil)
-    viewFuncManager.addFunction("day",dayFunc)
+    viewFuncManager.addFunction("day",dayPageFunc)
     viewFuncManager.addFunction("insertPage",insertPageFunc)
-    viewFuncManager.addFunction("loginPage",loginFunc)
+    viewFuncManager.addFunction("loginPage",loginPageFunc)
 
 
     insertFuncManager.addFunction("insertedValue",retriveInsertedValueData)
-    insertFuncManager.addFunction("login",retriveLoginData)
-    
+    insertFuncManager.addFunction("login",retriveInsertedLoginData)
     
     insertRequestManager.addFunction("insertedValue",processInsertedValueData)
-    insertRequestManager.addFunction("login",processLoginFunc)
+    insertRequestManager.addFunction("login",processLoginData)
 
 
 

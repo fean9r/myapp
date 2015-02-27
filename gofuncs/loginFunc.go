@@ -25,38 +25,7 @@ import (
 //     }
 // }
 
-// view handler func
-func loginFunc(w http.ResponseWriter, r *http.Request) (*Params,error) {
-    
-    sess := globalSessions.SessionStart(w, r)
-    crutime := time.Now().Unix()
-    h := md5.New()
-    io.WriteString(h, strconv.FormatInt(crutime, 10))
-    token := fmt.Sprintf("%x", h.Sum(nil))
-    
-    param := Params {
-        "Token" : token,
-        "username" : sess.Get("username")}
-    return &param , nil
-}
-
-// insert handler func
-func retriveLoginData (w http.ResponseWriter,r *http.Request) (*Params,error) {
-    sess := globalSessions.SessionStart(w, r)
-    user := r.FormValue("username")
-    pass := r.FormValue("password")
-    
-    if goodIdentity(&user, &pass) {
-        param := Params {
-            "Username" :  user,
-            "Password" : pass,
-        }
-        sess.Set("username", user)
-        return &param,nil
-    }
-    return nil,errors.New("Not correct login data")
-}
-
+// internal function to check if the identity is good and known in the system
 func goodIdentity (u , pass *string) bool {
     h := true
 
@@ -68,7 +37,37 @@ func goodIdentity (u , pass *string) bool {
 }
 
 
-func processLoginFunc (w http.ResponseWriter, r *http.Request,param *Params) error {
+//  the xxxPageFunc will provide the data for the view the page 
+func loginPageFunc (w http.ResponseWriter, r *http.Request, param *Params) (error) {
+    
+    sess := globalSessions.SessionStart(w, r)
+    crutime := time.Now().Unix()
+    h := md5.New()
+    io.WriteString(h, strconv.FormatInt(crutime, 10))
+    token := fmt.Sprintf("%x", h.Sum(nil))
+    (*param)["Token"] = token
+    (*param)["username"] = sess.Get("username")
+    return nil
+}
+
+// insert handler func
+func retriveInsertedLoginData (w http.ResponseWriter,r *http.Request,param *Params) error {
+    sess := globalSessions.SessionStart(w, r)
+    user := r.FormValue("username")
+    pass := r.FormValue("password")
+    
+    if goodIdentity(&user, &pass) {
+        (*param)["Username"] = user
+        (*param)["Password"] = pass
+        sess.Set("username", user)
+        return nil
+    }
+    return errors.New("Not correct login data")
+}
+
+
+
+func processLoginData (w http.ResponseWriter, r *http.Request, param *Params) (error) {
     
 	return nil
 }

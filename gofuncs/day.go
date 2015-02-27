@@ -1,13 +1,14 @@
 //day page related functions
-package specificPages
+package hallo
 
 import (
+    "net/http"
     "time"
     "appengine"
     "appengine/datastore"
 )
 
-func dayFunc(w http.ResponseWriter, r *http.Request) (*Params,error) {
+func dayPageFunc(w http.ResponseWriter, r *http.Request, param *Params) error {
     
     c := appengine.NewContext(r)
         // Ancestor queries, as shown here, are strongly consistent with the High
@@ -19,10 +20,8 @@ func dayFunc(w http.ResponseWriter, r *http.Request) (*Params,error) {
 
     dates := make([]Date, 0, 10)
     _, err := q.GetAll(c, &dates)
+    (*param)["Day"] = time.Now()
+    (*param)["Dates"] = dates
 
-    param := Params {
-        "Day" : time.Now(),
-        "Dates" : dates,
-        }
-    return &param , err
+    return err
 }
