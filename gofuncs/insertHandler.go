@@ -5,18 +5,22 @@ import (
 )
 
 
-func processRequest (r *http.Request,title string,param *Params) error {
+// func processRequest (r *http.Request,title string,param *Params) error {
     
-    switch title {
-        case "insertedValue":
-            return processInsertedValueData(r,param)
-        case "login":
-            return processLoginFunc(r,param)
-        default:
-            return nil
-        }
-}
+//     switch title {
+//         case "insertedValue":
+//             return processInsertedValueData(r,param)
+//         case "login":
+//             return processLoginFunc(r,param)
+//         default:
+//             return nil
+//         }
+// }
 
+
+// one insert follows this steps 
+// 1 we get the insert function corresponding to the title
+// 2 the function is performed retriving the data provided by the user
 
 func insert(w http.ResponseWriter, r *http.Request, title string) {
 
@@ -32,7 +36,7 @@ func insert(w http.ResponseWriter, r *http.Request, title string) {
             return
         }
 
-        param, err := myfunc(r)
+        param, err := myfunc(w,r)
         if err!=nil {
             // no params fetched with the insert function 
             // curl --data "username=&&password=2&&token=3" http://localhost:8080/insert/login
@@ -49,10 +53,10 @@ func insert(w http.ResponseWriter, r *http.Request, title string) {
         }
 
 
-            //request, err := insertRequestManager.getRequest(title)
-            //err := request(r, param)
+        request, err := insertRequestManager.getRequest(title)
 
-        err = processRequest(r,title,param)
+        err = request(r, param)
+
         if err!=nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
         }else {

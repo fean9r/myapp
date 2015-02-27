@@ -4,34 +4,18 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
-	//"log"
+	//"Handlers"
 )
 
 var viewFuncManager = NewFuncManager()
 
 var insertFuncManager = NewFuncManager()
 
-var HandleFunctions = ""
+var insertRequestManager = NewFuncManager()
 
-var validPath  *regexp.Regexp
+var globalSessions *Manager
 
 
-func makeHandler(fn func(http.ResponseWriter, *http.Request,string)) http.HandlerFunc {
-	return func (w http.ResponseWriter, r *http.Request){
-		m := validPath.FindStringSubmatch(r.URL.Path)
-		if m == nil {
-        	http.NotFound(w, r)
-       		return 
-    	}
-    	fn(w, r, m[2])
-	}
-}
-
-func addHandler (title string, handler http.HandlerFunc ) {
-
-	HandleFunctions+= title[1:len(title)-1]+"|"
-	http.HandleFunc(title, handler)
-}
 
 var templates = template.Must(template.ParseGlob("gtpl/*"))
 
@@ -59,10 +43,22 @@ func init() {
     viewFuncManager.addFunction("insertPage",insertPageFunc)
     viewFuncManager.addFunction("loginPage",loginFunc)
 
+
     insertFuncManager.addFunction("insertedValue",retriveInsertedValueData)
     insertFuncManager.addFunction("login",retriveLoginData)
     
+    
+    insertRequestManager.addFunction("insertedValue",processInsertedValueData)
+    insertRequestManager.addFunction("login",processLoginFunc)
+
+
+
+    // setting a new sessionManager
+    globalSessions = first( NewManager("memory","gosessionid",3600) ).(*Manager)
 
 
 }
 
+func first(args ...interface{}) interface{} {
+    return args[0]
+}

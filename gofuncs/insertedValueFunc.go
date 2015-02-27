@@ -8,6 +8,10 @@ import (
     "appengine/datastore"
     "log"
     "errors"
+    "io"    
+    "crypto/md5"
+    "fmt"
+    "strconv"
 )
 
 
@@ -28,7 +32,18 @@ func checkDate ( value *string) bool {
     return h
 }
 
-func retriveInsertedValueData (r *http.Request) (*Params,error) {
+func insertPageFunc (w http.ResponseWriter,r *http.Request) (*Params,error) {
+    
+    crutime := time.Now().Unix()
+    h := md5.New()
+    io.WriteString(h, strconv.FormatInt(crutime, 10))
+    token := fmt.Sprintf("%x", h.Sum(nil))
+    param := Params {"Token" : token}
+    return &param , nil
+}
+
+
+func retriveInsertedValueData (w http.ResponseWriter,r *http.Request) (*Params,error) {
     
     if date := r.FormValue("date") ; checkDate(&date) {
         param := Params {"Date" : date}
@@ -37,7 +52,7 @@ func retriveInsertedValueData (r *http.Request) (*Params,error) {
 
     return nil,errors.New("Not correct date")
 }
-func processInsertedValueData (r *http.Request,params *Params) error  {
+func processInsertedValueData (w http.ResponseWriter,r *http.Request,params *Params) error  {
         c := appengine.NewContext(r)
         value := (*params)["Date"]
 

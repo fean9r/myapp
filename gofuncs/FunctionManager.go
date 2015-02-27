@@ -5,7 +5,7 @@ import (
     "errors"
 )
 
-type fn func (*http.Request) (*Params,error)
+type fn func (http.ResponseWriter,*http.Request) (*Params,error)
 
 type FuncManager struct {
     funcMap map[string] fn
