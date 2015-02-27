@@ -4,6 +4,8 @@ import (
     "time"
 )
 
+type Params map[string] interface {}
+
 type Date struct {
     Person  string
     Content string

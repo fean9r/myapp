@@ -21,6 +21,7 @@ import (
 // one insert follows this steps 
 // 1 we get the insert function corresponding to the title
 // 2 the function is performed retriving the data provided by the user
+// 3 a function is performed to threat the data provided by the user
 
 func insert(w http.ResponseWriter, r *http.Request, title string) {
 

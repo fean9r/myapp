@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
-	//"Handlers"
+	"specificPages/"
 )
 
 var viewFuncManager = NewFuncManager()
@@ -15,14 +15,16 @@ var insertRequestManager = NewFuncManager()
 
 var globalSessions *Manager
 
-
+func first(args ...interface{}) interface{} {
+    return args[0]
+}
 
 var templates = template.Must(template.ParseGlob("gtpl/*"))
 
-type Params map[string]interface {}
 
 
-func renderTemplate (w http.ResponseWriter, tmpl string, p  interface{}) {
+
+func renderTemplate (w http.ResponseWriter, tmpl string, p  interface {} ) {
     err := templates.ExecuteTemplate(w, tmpl, p)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -59,6 +61,4 @@ func init() {
 
 }
 
-func first(args ...interface{}) interface{} {
-    return args[0]
-}
+
