@@ -40,26 +40,26 @@ func goodIdentity (u , pass *string) bool {
 //  the xxxPageFunc will provide the data for the view the page 
 func loginPageFunc (w http.ResponseWriter, r *http.Request, param *Params) (error) {
     
-    sess := globalSessions.SessionStart(w, r)
+    //sess := globalSessions.SessionStart(w, r)
     crutime := time.Now().Unix()
     h := md5.New()
     io.WriteString(h, strconv.FormatInt(crutime, 10))
     token := fmt.Sprintf("%x", h.Sum(nil))
     (*param)["Token"] = token
-    (*param)["username"] = sess.Get("username")
+    //(*param)["username"] = sess.Get("username")
     return nil
 }
 
 // insert handler func
 func retriveInsertedLoginData (w http.ResponseWriter,r *http.Request,param *Params) error {
-    sess := globalSessions.SessionStart(w, r)
+    //sess := globalSessions.SessionStart(w, r)
     user := r.FormValue("username")
     pass := r.FormValue("password")
     
     if goodIdentity(&user, &pass) {
         (*param)["Username"] = user
         (*param)["Password"] = pass
-        sess.Set("username", user)
+        //sess.Set("username", user)
         return nil
     }
     return errors.New("Not correct login data")

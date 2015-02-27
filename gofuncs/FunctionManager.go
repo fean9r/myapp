@@ -8,8 +8,6 @@ import (
 
 type Params map[string] interface {}
 
-//type fn func ( args ... interface{} ) (error)
-
 type function func (http.ResponseWriter, *http.Request, *Params) error
 
 type FuncManager struct {

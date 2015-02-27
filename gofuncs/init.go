@@ -4,6 +4,10 @@ import (
 	"html/template"
 	"net/http"
 	"regexp"
+    "github.com/fean9r/session"
+    _ "github.com/fean9r/session/providers/memory"
+     "errors"
+     "log"
 )
 
 var viewFuncManager = NewFuncManager()
@@ -12,7 +16,7 @@ var insertFuncManager = NewFuncManager()
 
 var insertRequestManager = NewFuncManager()
 
-var globalSessions *Manager
+var globalSessions *session.Manager
 
 func first(args ...interface{}) interface{} {
     return args[0]
@@ -34,26 +38,31 @@ func init() {
     addHandler("/view/", makeHandler(view))
     validPath = regexp.MustCompile("^/("+ HandleFunctions +")/([a-zA-Z0-9]+)$")
     
-    viewFuncManager.addFunction("main",nil)
-    viewFuncManager.addFunction("week",nil)
-    viewFuncManager.addFunction("stats",nil)
-    viewFuncManager.addFunction("day",dayPageFunc)
-    viewFuncManager.addFunction("insertPage",insertPageFunc)
-    viewFuncManager.addFunction("loginPage",loginPageFunc)
+    viewFuncManager.addFunction("main", nil)
+    viewFuncManager.addFunction("week", nil)
+    viewFuncManager.addFunction("stats", nil)
+    viewFuncManager.addFunction("day", dayPageFunc)
+    viewFuncManager.addFunction("insertPage", insertPageFunc)
+    viewFuncManager.addFunction("loginPage", loginPageFunc)
 
 
-    insertFuncManager.addFunction("insertedValue",retriveInsertedValueData)
-    insertFuncManager.addFunction("login",retriveInsertedLoginData)
+    insertFuncManager.addFunction("insertedValue", retriveInsertedValueData)
+    insertFuncManager.addFunction("login", retriveInsertedLoginData)
     
-    insertRequestManager.addFunction("insertedValue",processInsertedValueData)
-    insertRequestManager.addFunction("login",processLoginData)
+    insertRequestManager.addFunction("insertedValue", processInsertedValueData)
+    insertRequestManager.addFunction("login", processLoginData)
 
-
-
+    err := errors.New("")
     // setting a new sessionManager
-    globalSessions = first( NewManager("memory","gosessionid",3600) ).(*Manager)
-
-
+    globalSessions, err = session.NewManager("memory","gosessionid",3600) 
+    if err != nil {
+       
+       log.Println(err)     
+        
+    }else {
+        go globalSessions.GC()
+    }
+    
 }
 
 
