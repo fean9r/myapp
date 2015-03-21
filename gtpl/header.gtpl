@@ -23,7 +23,15 @@
   		<h1 class="logo " id="logo">
   			<a class="logo_anchor" href="/view/main">MyApp</a>
   		</h1>
-  		<a class="login" href="/view/loginPage">Login</a>
+  		<div class="right">
+  		{{if .context.User }} 
+  			<p class="login"> Welcomen {{.context.User.username}} !</p>
+  		{{else}}  
+  			<a class="signup_link login-button" href="/view/loginPage">Log in</a> 
+  			<a class="signup_link signup-button" href="/view/registerPage">Sign up</a> 
+  		{{end}}
+  		</div>
+  		
   	</div> <!-- End header-->
   	<div class="container"> <!-- Start Container-->
 {{end}}

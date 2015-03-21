@@ -29,23 +29,84 @@ div.header {
 	border-color: #e9eaed #dfe0e4 #d0d1d5;
 
 }
-.login  {
+div.header .right {
 	float: right;
-	overflow: hidden;
-	width: 150px;
-	height: 100%;
-	padding: 0;
-	margin: 15px 0px 0px 5px;
-	color: #696969;
-	font-size: 20px;
+ 	height: 32px;
+  	margin-top: 10px;
+  	margin-right: 0;
+  	position: relative;
+  	vertical-align: top;
 }
-.logo  {
+
+
+div.header .login-button  {
+	font-size: 14px;
+	background-color: rgba(255,255,255,.3);
+	color:#696969;
+  	display: inline-block;
+  	box-sizing: border-box;
+  	line-height: 14px;
+	padding: 4px 7px 5px;
+	font-weight: 700;
+  	border-width: 1px;
+  	border-style: solid;
+  	text-decoration: none;
+  	border-radius: 2px;
+  	cursor: pointer;
+  	display: inline-block;
+  	font-family: "Helvetica Neue","HelveticaNeue",Helvetica,Arial,sans-serif;
+  	/* -webkit-user-select: none; */
+  	-moz-user-select: none;
+  	-ms-user-select: none;
+  	user-select: none;
+  	/* -webkit-box-sizing: border-box; */
+  	-moz-box-sizing: border-box;
+  	box-sizing: border-box;
+}
+
+div.header .signup-button  {
+	margin-right: 50px;
+	font-size: 14px;
+	background-color: rgba(255,255,255,.3);
+	color:#696969;
+  	display: inline-block;
+  	box-sizing: border-box;
+  	line-height: 14px;
+	padding: 4px 7px 5px;
+	font-weight: 700;
+  	border-width: 1px;
+  	border-style: solid;
+  	text-decoration: none;
+  	border-radius: 2px;
+  	cursor: pointer;
+  	display: inline-block;
+  	font-family: "Helvetica Neue","HelveticaNeue",Helvetica,Arial,sans-serif;
+  	/* -webkit-user-select: none; */
+  	-moz-user-select: none;
+  	-ms-user-select: none;
+  	user-select: none;
+  	/* -webkit-box-sizing: border-box; */
+  	-moz-box-sizing: border-box;
+  	box-sizing: border-box;
+}
+
+div.header .signup_link{
+
+  border: none;
+  height: 32px;
+  line-height: 22px;
+  padding-left: 13px;
+  padding-right: 13px;
+  text-align: center;
+  vertical-align: top;	
+}
+div.header .logo  {
 	float: left;
 	overflow: hidden;
 	width: 150px;
 	height: 100%;
 	padding: 0;
-	margin: 5px 0px 0px 5px;
+	margin: 5px 0px 0px 10px;
 }
 .logo a {
 	padding: 1px 1px 1px 6px;

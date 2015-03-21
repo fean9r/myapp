@@ -44,21 +44,21 @@ func init() {
     viewFuncManager.addFunction("day", dayPageFunc)
     viewFuncManager.addFunction("insertPage", insertPageFunc)
     viewFuncManager.addFunction("loginPage", loginPageFunc)
-
+    viewFuncManager.addFunction("registerPage", registerPageFunc)
 
     insertFuncManager.addFunction("insertedValue", retriveInsertedValueData)
     insertFuncManager.addFunction("login", retriveInsertedLoginData)
+    insertFuncManager.addFunction("register", retriveInsertedRegisterData)
     
     insertRequestManager.addFunction("insertedValue", processInsertedValueData)
     insertRequestManager.addFunction("login", processLoginData)
+    insertRequestManager.addFunction("register", processRegisterData)
 
     err := errors.New("")
     // setting a new sessionManager
     globalSessions, err = session.NewManager("memory","gosessionid",3600) 
     if err != nil {
-       
        log.Println(err)     
-        
     }else {
         go globalSessions.GC()
     }
