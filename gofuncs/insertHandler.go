@@ -5,18 +5,6 @@ import (
 )
 
 
-// func processRequest (r *http.Request,title string,param *Params) error {
-    
-//     switch title {
-//         case "insertedValue":
-//             return processInsertedValueData(r,param)
-//         case "login":
-//             return processLoginFunc(r,param)
-//         default:
-//             return nil
-//         }
-// }
-
 
 // one insert follows this steps 
 // 1 we get the insert function corresponding to the title
@@ -62,7 +50,8 @@ func insert(w http.ResponseWriter, r *http.Request, title string) {
         err = requestFunction(w ,r ,&param)
 
         if err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
+            renderTemplate(w,"Error",err)
+            //http.Error(w, err.Error(), http.StatusInternalServerError)
         }else {
             renderTemplate(w,title,param)
         }

@@ -7,7 +7,6 @@ import (
     "github.com/fean9r/session"
     _ "github.com/fean9r/session/providers/memory"
      "errors"
-     "log"
 )
 
 var viewFuncManager = NewFuncManager()
@@ -58,7 +57,7 @@ func init() {
     // setting a new sessionManager
     globalSessions, err = session.NewManager("memory","gosessionid",3600) 
     if err != nil {
-       log.Println(err)     
+       reportValue("init",err)     
     }else {
         go globalSessions.GC()
     }

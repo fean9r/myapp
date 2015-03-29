@@ -24,8 +24,9 @@
   			<a class="logo_anchor" href="/view/main">MyApp</a>
   		</h1>
   		<div class="right">
-  		{{if .context.User }} 
-  			<p class="login"> Welcomen {{.context.User.username}} !</p>
+  		{{if .param.User }} 
+  			<p class="login"> Welcomen {{.param.User.Username}} !</p>
+        <a class="signup_link signup-button" href="/view/LogoutPage">Logout</a> 
   		{{else}}  
   			<a class="signup_link login-button" href="/view/loginPage">Log in</a> 
   			<a class="signup_link signup-button" href="/view/registerPage">Sign up</a> 

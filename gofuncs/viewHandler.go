@@ -2,7 +2,6 @@ package hallo
 
 import (
 	"net/http"
-    "log"
 )
 
 func view(w http.ResponseWriter, r *http.Request, title string ) {
@@ -24,8 +23,8 @@ func view(w http.ResponseWriter, r *http.Request, title string ) {
         }
 
         // not usefull just for testing
-        if param!=nil {
-            log.Println(param)
+        if param != nil {
+            reportValue("view",param)
         }
         renderTemplate(w,title,param)
     }

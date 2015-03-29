@@ -13,18 +13,13 @@ indexes:
 - kind: Date
   ancestor: yes
   properties:
+  - name: Person
   - name: Date
     direction: desc
 
 - kind: Date
   ancestor: yes
   properties:
-  - name: Person
-  - name: Date
-    direction: desc
-
-- kind: Greeting
-  ancestor: yes
-  properties:
+  - name: User
   - name: Date
     direction: desc

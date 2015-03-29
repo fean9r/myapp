@@ -6,7 +6,6 @@ import (
 	"time"
 	"appengine"
     "appengine/datastore"
-    "log"
     "errors"
     "io"    
     "crypto/md5"
@@ -15,11 +14,13 @@ import (
 )
 
 
-// guestbookKey returns the key used for all guestbook entries.
-func guestbookKey(c appengine.Context) *datastore.Key {
-        // The string "default_guestbook" here could be varied to have multiple guestbooks.
-        return datastore.NewKey(c, "Guestbook", "default_guestbook", 0, nil)
+// datebookKey returns the key used for all Datebook entries.
+func datebookKey(c appengine.Context) *datastore.Key {
+    // The string "default_Datebook" here could be varied to have multiple Datebooks.
+    return datastore.NewKey(c, "Datebook", "default_Datebook", 0, nil)
 }
+
+
 
 func checkDate ( value *string) bool {
     h := true
@@ -39,7 +40,6 @@ func insertPageFunc (w http.ResponseWriter,r *http.Request,param *Params) (error
     h := md5.New()
     io.WriteString(h, strconv.FormatInt(crutime, 10))
     token := fmt.Sprintf("%x", h.Sum(nil))
-     //:= Params {"" : }
     (*param)["Token"] = token
     return nil
 }
@@ -48,14 +48,14 @@ func insertPageFunc (w http.ResponseWriter,r *http.Request,param *Params) (error
 func retriveInsertedValueData (w http.ResponseWriter,r *http.Request, param *Params) (error) {
     
     if date := r.FormValue("date") ; checkDate(&date) {
-         (*param)["Date"] =date
+         (*param)["Date"] = date
         return nil
     }
     return errors.New("Not correct date")
 }
 
 func processInsertedValueData (w http.ResponseWriter,r *http.Request,params *Params) error  {
-        c := appengine.NewContext(r)
+        
         value := (*params)["Date"]
 
         str, ok := value.(string); 
@@ -65,13 +65,14 @@ func processInsertedValueData (w http.ResponseWriter,r *http.Request,params *Par
         }
 		
 		date := Date {
-            Person: "WhoWasInserting",
+            User: "WhoWasInserting",
             Content: str,
             Date: time.Now(),
 		}
 
-        log.Println(date)
-        key := datastore.NewIncompleteKey(c, "Date", guestbookKey(c))
+        reportValue("processInsertedValueData",date)
+        c := appengine.NewContext(r)
+        key := datastore.NewIncompleteKey(c, "Date", datebookKey(c))
         _, err := datastore.Put(c, key, &date)
         return err
 }

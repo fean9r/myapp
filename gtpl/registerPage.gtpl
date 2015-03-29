@@ -4,7 +4,7 @@
 <div id="content">
   	<h2>Register yourself to access MyApp!</h2>
   	<div id="post_container">
-    	<form action="/insert/login" method="post">
+    	<form action="/insert/register" method="post">
     		Email:<input type="text" name="username">
     		Username:<input type="text" name="username">
     		Password:<input type="password" name="password">

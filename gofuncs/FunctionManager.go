@@ -6,7 +6,7 @@ import (
 )
 
 
-type Params map[string] interface {}
+
 
 type function func (http.ResponseWriter, *http.Request, *Params) error
 
